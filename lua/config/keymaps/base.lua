@@ -56,6 +56,14 @@ M.setup = function()
 			vim.cmd("Explore")
 		end
 	end, { silent = true })
+	-- Toggle netrw con leader n
+	map("n", "<leader>n", function()
+		if vim.bo.filetype == "netrw" then
+			vim.cmd("bd")
+		else
+			vim.cmd("Explore")
+		end
+	end, { silent = true })
 
 	-- Navegación insert mode
 	map("i", "<C-h>", "<Left>", { noremap = true })

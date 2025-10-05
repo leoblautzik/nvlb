@@ -6,7 +6,7 @@ return {
 			options = {
 				--theme = "catppuccin", -- usa el tema automáticamente
 				globalstatus = true, -- single bar para todo el layout
-				section_separators = { left = "" }, --, right = "" },
+				section_separators = { right = "", left = "" },
 				component_separators = "", -- { left = "", right = "" },
 			},
 			sections = {

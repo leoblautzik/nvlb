@@ -1,11 +1,12 @@
 -- Cargar todos los autocmds
 local modules = {
-	"python",
-	"c",
-	"terminal",
-	"yank",
-	"numbers",
-	"cursor_restore",
+	"autocmds",
+	-- "python",
+	-- "c",
+	-- "terminal",
+	-- "yank",
+	-- "numbers",
+	-- "cursor_restore",
 }
 
 for _, mod in ipairs(modules) do
