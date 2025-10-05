@@ -45,18 +45,12 @@ return {
 				ensure_installed = {
 					-- C
 					"clangd",
-					"clang-format",
 					-- Python
 					"pyright",
-					"python-lsp-server",
 					"ruff",
 					-- Go
 					"gopls",
-					"gofumpt",
-					"goimport-reviser",
-					"golines",
 					-- Lua
-					"lua_languaje-server",
 					"stylua",
 				},
 				automatic_installation = true,
