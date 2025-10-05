@@ -43,10 +43,21 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"clangd", -- C
-					"pyright", -- Python
-					"gopls", -- Go
-					"lua_ls", -- Lua
+					-- C
+					"clangd",
+					"clang-format",
+					-- Python
+					"pyright",
+					"python-lsp-server",
+					"ruff",
+					-- Go
+					"gopls",
+					"gofumpt",
+					"goimport-reviser",
+					"golines",
+					-- Lua
+					"lua_languaje-server",
+					"stylua",
 				},
 				automatic_installation = true,
 			})
