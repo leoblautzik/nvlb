@@ -21,12 +21,14 @@ local function load_last_theme()
 end
 
 -- Aplica el tema y actualiza lualine
-local function set_theme(name)
+local function set_theme(name, save)
   local ok, err = pcall(vim.cmd.colorscheme, name)
   local _, lualine = pcall(require, 'lualine')
   if ok then
-    vim.notify('🎨 Tema aplicado: ' .. name, vim.log.levels.INFO)
-    save_theme(name)
+    if save then
+      save_theme(name)
+      vim.notify('🎨 Tema aplicado: ' .. name, vim.log.levels.INFO)
+    end
     if lualine then
       lualine.setup { options = { theme = 'auto' } }
     end
@@ -35,7 +37,7 @@ local function set_theme(name)
   end
 end
 
--- Telescope picker para elegir tema (lista generada al abrir)
+-- Selector con Telescope + previsualización
 local function pick_theme()
   local ok, pickers = pcall(require, 'telescope.pickers')
   if not ok then
@@ -48,7 +50,7 @@ local function pick_theme()
   local actions = require 'telescope.actions'
   local action_state = require 'telescope.actions.state'
 
-  -- Genera la lista de todos los colores disponibles AHORA
+  local original_theme = load_last_theme() or 'catppuccin'
   local themes = vim.fn.getcompletion('', 'color')
 
   pickers
@@ -57,23 +59,66 @@ local function pick_theme()
       finder = finders.new_table { results = themes },
       sorter = conf.generic_sorter {},
       attach_mappings = function(prompt_bufnr, map)
+        -- Guardamos la selección previa
+        local last_previewed = nil
+
+        -- Previsualización al moverse
+        local function preview_theme()
+          local selection = action_state.get_selected_entry()
+          if selection and selection[1] ~= last_previewed then
+            last_previewed = selection[1]
+            pcall(vim.cmd.colorscheme, selection[1])
+          end
+        end
+
+        -- Confirmar selección
         local function select_theme()
           local selection = action_state.get_selected_entry()
           actions.close(prompt_bufnr)
           if selection then
-            set_theme(selection[1])
+            set_theme(selection[1], true)
+          else
+            set_theme(original_theme, true)
           end
+        end
+
+        -- Restaurar si se cancela
+        local function cancel()
+          actions.close(prompt_bufnr)
+          set_theme(original_theme, false)
+          vim.notify('↩️ Tema restaurado: ' .. original_theme)
         end
 
         map('i', '<CR>', select_theme)
         map('n', '<CR>', select_theme)
+        map('i', '<Esc>', cancel)
+        map('n', '<Esc>', cancel)
+        map('i', '<C-c>', cancel)
+        map('n', '<C-c>', cancel)
+        map('i', '<Up>', function()
+          actions.move_selection_previous(prompt_bufnr)
+          preview_theme()
+        end)
+        map('i', '<Down>', function()
+          actions.move_selection_next(prompt_bufnr)
+          preview_theme()
+        end)
+        map('n', '<Up>', function()
+          actions.move_selection_previous(prompt_bufnr)
+          preview_theme()
+        end)
+        map('n', '<Down>', function()
+          actions.move_selection_next(prompt_bufnr)
+          preview_theme()
+        end)
+
         return true
       end,
     })
     :find()
 end
 
--- Keymaps
+-- Keymap
 vim.keymap.set('n', '<leader>tth', pick_theme, { desc = 'Elegir tema con Telescope' })
 
 -- Aplica el último tema al iniciar
@@ -81,7 +126,7 @@ vim.api.nvim_create_autocmd('User', {
   pattern = 'VeryLazy',
   callback = function()
     local last = load_last_theme() or 'catppuccin'
-    set_theme(last)
+    set_theme(last, false)
   end,
 })
 
