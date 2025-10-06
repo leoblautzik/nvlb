@@ -5,7 +5,7 @@ return {
 		require("lualine").setup({
 			options = {
 				--theme = "catppuccin", -- usa el tema automáticamente
-				globalstatus = true, -- single bar para todo el layout
+				globalstatus = false, -- single bar para todo el layout
 				section_separators = { right = "", left = "" },
 				component_separators = "", -- { left = "", right = "" },
 			},

@@ -37,5 +37,5 @@ require("lazy").setup({
 	-- LSPs
 	{ import = "plugins.lsp" },
 	{ import = "plugins.conform" },
-	{ import = "plugins.files" },
+	{ import = "plugins.gitsigns" },
 })
