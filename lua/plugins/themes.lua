@@ -1,7 +1,6 @@
--- themes.lua
 local theme_state_file = vim.fn.stdpath 'data' .. '/last_theme.txt'
 
--- Guarda el tema actual en el archivo
+-- Guarda el tema actual
 local function save_theme(name)
   local f = io.open(theme_state_file, 'w')
   if f then
@@ -10,7 +9,7 @@ local function save_theme(name)
   end
 end
 
--- Lee el último tema guardado
+-- Carga el último tema guardado
 local function load_last_theme()
   local f = io.open(theme_state_file, 'r')
   if f then
@@ -20,64 +19,74 @@ local function load_last_theme()
   end
   return nil
 end
--- Lista de temas en el orden que quieras recorrer
-local themes = { 'catppuccin', 'rose-pine', 'nightfox', 'tokyonight', 'dracula', 'gruvbox', 'kanagawa' }
 
--- Índice actual
-local current_index = 1
-
--- Aplica el tema y lo guarda
+-- Aplica el tema y actualiza lualine
 local function set_theme(name)
   local ok, err = pcall(vim.cmd.colorscheme, name)
   local _, lualine = pcall(require, 'lualine')
   if ok then
     vim.notify('🎨 Tema aplicado: ' .. name, vim.log.levels.INFO)
     save_theme(name)
-    lualine.setup { options = { theme = name } }
+    if lualine then
+      lualine.setup { options = { theme = 'auto' } }
+    end
   else
-    vim.notify('Error cargando tema: ' .. name .. '\n' .. err, vim.log.levels.ERROR)
+    vim.notify('❌ Error cargando tema: ' .. name .. '\n' .. err, vim.log.levels.ERROR)
   end
 end
 
--- Función para toggle cíclico
-local function toggle_theme()
-  current_index = current_index % #themes + 1 -- Avanza al siguiente, vuelve al inicio
-  set_theme(themes[current_index])
+-- Telescope picker para elegir tema (lista generada al abrir)
+local function pick_theme()
+  local ok, pickers = pcall(require, 'telescope.pickers')
+  if not ok then
+    vim.notify('Telescope no está instalado', vim.log.levels.ERROR)
+    return
+  end
+
+  local finders = require 'telescope.finders'
+  local conf = require('telescope.config').values
+  local actions = require 'telescope.actions'
+  local action_state = require 'telescope.actions.state'
+
+  -- Genera la lista de todos los colores disponibles AHORA
+  local themes = vim.fn.getcompletion('', 'color')
+
+  pickers
+    .new({}, {
+      prompt_title = 'Seleccionar tema',
+      finder = finders.new_table { results = themes },
+      sorter = conf.generic_sorter {},
+      attach_mappings = function(prompt_bufnr, map)
+        local function select_theme()
+          local selection = action_state.get_selected_entry()
+          actions.close(prompt_bufnr)
+          if selection then
+            set_theme(selection[1])
+          end
+        end
+
+        map('i', '<CR>', select_theme)
+        map('n', '<CR>', select_theme)
+        return true
+      end,
+    })
+    :find()
 end
 
--- Keymap para toggle
-vim.keymap.set('n', '<leader>ttc', toggle_theme, { desc = 'Toggle entre todos los temas' })
+-- Keymaps
+vim.keymap.set('n', '<leader>tth', pick_theme, { desc = 'Elegir tema con Telescope' })
 
--- Config común de los keymaps
-local function setup_theme_keymaps()
-  vim.keymap.set('n', '<leader>thc', function()
-    set_theme 'catppuccin'
-  end, { desc = 'Tema Catppuccin (dark)' })
+-- Aplica el último tema al iniciar
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'VeryLazy',
+  callback = function()
+    local last = load_last_theme() or 'catppuccin'
+    set_theme(last)
+  end,
+})
 
-  vim.keymap.set('n', '<leader>thr', function()
-    set_theme 'rose-pine'
-  end, { desc = 'Tema Rose Pine (moon)' })
-
-  vim.keymap.set('n', '<leader>tht', function()
-    set_theme 'tokyonight'
-  end, { desc = 'Tema Tokyo Night (night)' })
-  vim.keymap.set('n', '<leader>thf', function()
-    set_theme 'nightfox'
-  end, { desc = 'Tema NightFox (nightfox)' })
-  vim.keymap.set('n', '<leader>thd', function()
-    set_theme 'dracula'
-  end, { desc = 'Tema Dracula (soft)' })
-  vim.keymap.set('n', '<leader>thg', function()
-    vim.o.background = 'dark'
-    set_theme 'gruvbox'
-  end, { desc = 'Tema gruvbox' })
-  vim.keymap.set('n', '<leader>thk', function()
-    vim.o.background = 'dark'
-    set_theme 'kanagawa'
-  end, { desc = 'Tema Kanagawa' })
-end
 ------------------------------------------------
--- Temas: Catppuccin por defecto
+-- Plugins de temas
 ------------------------------------------------
 return {
   {
@@ -174,19 +183,25 @@ return {
       }
     end,
   },
-
-  {
-    'lazy.nvim',
-    init = function()
-      -- Este autocmd se ejecuta una vez que todos los plugins están listos
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'VeryLazy',
-        callback = function()
-          setup_theme_keymaps()
-          local last = load_last_theme() or 'catppuccin'
-          set_theme(last)
-        end,
-      })
-    end,
-  },
 }
+
+-- return {
+--   {
+--     'catppuccin/nvim',
+--     name = 'catppuccin',
+--     priority = 1000,
+--     lazy = false,
+--     config = function()
+--       require('catppuccin').setup {
+--         flavour = 'mocha',
+--         integrations = { treesitter = true, telescope = true, which_key = true },
+--       }
+--     end,
+--   },
+--   { 'rose-pine/neovim', name = 'rose-pine' },
+--   { 'folke/tokyonight.nvim', name = 'tokyonight' },
+--   { 'EdenEast/nightfox.nvim', name = 'nightfox' },
+--   { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
+--   { 'ellisonleao/gruvbox.nvim', name = 'gruvbox' },
+--   { 'Mofiqul/dracula.nvim', name = 'dracula' },
+-- }
