@@ -1,13 +1,16 @@
 -- init.lua
 
 -- Opciones
-require("config.options")
+require 'config.options'
 
 -- Keymaps
-require("config.keymaps")
+require 'config.keymaps'
 
 -- Autocomandos
-require("config.autocmds")
+require 'config.autocmds'
 
 -- Plugins (lazy.nvim + lista de plugins)
-require("plugins")
+require 'plugins'
+
+-- Snippets
+require 'snippets'

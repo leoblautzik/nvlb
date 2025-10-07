@@ -38,4 +38,5 @@ require('lazy').setup {
   { import = 'plugins.lsp' },
   { import = 'plugins.conform' },
   { import = 'plugins.gitsigns' },
+  { import = 'plugins.ibl' },
 }
