@@ -13,4 +13,4 @@ require 'config.autocmds'
 require 'plugins'
 
 -- Snippets
-require 'snippets'
+-- require 'snippets'
