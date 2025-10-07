@@ -1,6 +1,5 @@
 local theme_state_file = vim.fn.stdpath 'data' .. '/last_theme.txt'
 
--- Guarda el tema actual
 local function save_theme(name)
   local f = io.open(theme_state_file, 'w')
   if f then
@@ -9,7 +8,6 @@ local function save_theme(name)
   end
 end
 
--- Carga el último tema guardado
 local function load_last_theme()
   local f = io.open(theme_state_file, 'r')
   if f then
@@ -20,7 +18,6 @@ local function load_last_theme()
   return nil
 end
 
--- Aplica el tema y actualiza lualine
 local function set_theme(name, save)
   local ok, err = pcall(vim.cmd.colorscheme, name)
   local _, lualine = pcall(require, 'lualine')
@@ -37,7 +34,6 @@ local function set_theme(name, save)
   end
 end
 
--- Selector con Telescope + previsualización
 local function pick_theme()
   local ok, pickers = pcall(require, 'telescope.pickers')
   if not ok then
@@ -53,36 +49,81 @@ local function pick_theme()
   local original_theme = load_last_theme() or 'catppuccin'
   local themes = vim.fn.getcompletion('', 'color')
 
+  -- Filtrar temas builtin y viejos
+  local filtered_themes = vim.tbl_filter(function(t)
+    return not (
+      t:match '^blue$'
+      or t:match '^darkblue$'
+      or t:match '^default$'
+      or t:match '^delek$'
+      or t:match '^desert$'
+      or t:match '^elflord$'
+      or t:match '^evening$'
+      or t:match '^habamax$'
+      or t:match '^industry$'
+      or t:match '^koehler$'
+      or t:match '^lunaperche$'
+      or t:match '^morning$'
+      or t:match '^murphy$'
+      or t:match '^pablo$'
+      or t:match '^peachpuff$'
+      or t:match '^quiet$'
+      or t:match '^ron$'
+      or t:match '^shine$'
+      or t:match '^slate$'
+      or t:match '^torte$'
+      or t:match '^zellner$'
+      or t:match '^sorbet$'
+      or t:match '^unokai$'
+      or t:match '^vim$'
+      or t:match '^wildcharm$'
+      or t:match '^zaibatsu$'
+    )
+  end, themes)
+
+  -- Agrupación visual opcional
+  local entries = {}
+  for _, name in ipairs(filtered_themes) do
+    local group = name:match '^(%a+fox)$' or name:match '^(catppuccin)' or name:match '^(tokyonight)'
+    if group and name ~= group then
+      table.insert(entries, string.format('%s → %s', group, name))
+    else
+      table.insert(entries, name)
+    end
+  end
+
   pickers
     .new({}, {
       prompt_title = 'Seleccionar tema',
-      finder = finders.new_table { results = themes },
+      finder = finders.new_table {
+        results = entries,
+        entry_maker = function(entry)
+          local real = entry:match '→%s*(%S+)$' or entry
+          return { value = real, display = entry, ordinal = entry }
+        end,
+      },
       sorter = conf.generic_sorter {},
       attach_mappings = function(prompt_bufnr, map)
-        -- Guardamos la selección previa
         local last_previewed = nil
 
-        -- Previsualización al moverse
         local function preview_theme()
           local selection = action_state.get_selected_entry()
-          if selection and selection[1] ~= last_previewed then
-            last_previewed = selection[1]
-            pcall(vim.cmd.colorscheme, selection[1])
+          if selection and selection.value ~= last_previewed then
+            last_previewed = selection.value
+            pcall(vim.cmd.colorscheme, selection.value)
           end
         end
 
-        -- Confirmar selección
         local function select_theme()
           local selection = action_state.get_selected_entry()
           actions.close(prompt_bufnr)
           if selection then
-            set_theme(selection[1], true)
+            set_theme(selection.value, true)
           else
             set_theme(original_theme, true)
           end
         end
 
-        -- Restaurar si se cancela
         local function cancel()
           actions.close(prompt_bufnr)
           set_theme(original_theme, false)
@@ -118,10 +159,8 @@ local function pick_theme()
     :find()
 end
 
--- Keymap
 vim.keymap.set('n', '<leader>tth', pick_theme, { desc = 'Elegir tema con Telescope' })
 
--- Aplica el último tema al iniciar
 vim.api.nvim_create_autocmd('User', {
   pattern = 'VeryLazy',
   callback = function()
@@ -134,18 +173,7 @@ vim.api.nvim_create_autocmd('User', {
 -- Plugins de temas
 ------------------------------------------------
 return {
-  {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    priority = 1000,
-    lazy = false,
-    config = function()
-      require('catppuccin').setup {
-        flavour = 'mocha',
-        integrations = { treesitter = true, telescope = true, which_key = true },
-      }
-    end,
-  },
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000, lazy = false },
   { 'rose-pine/neovim', name = 'rose-pine' },
   { 'folke/tokyonight.nvim', name = 'tokyonight' },
   { 'EdenEast/nightfox.nvim', name = 'nightfox' },
@@ -153,6 +181,7 @@ return {
   { 'ellisonleao/gruvbox.nvim', name = 'gruvbox' },
   { 'Mofiqul/dracula.nvim', name = 'dracula' },
 }
+
 -- return {
 --   {
 --     'catppuccin/nvim',

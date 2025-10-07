@@ -19,6 +19,7 @@ o.relativenumber = true
 o.showmode = false
 o.cursorline = true
 o.termguicolors = true
+o.signcolumn = 'yes'
 
 -- Archivos y undo
 o.swapfile = false

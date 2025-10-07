@@ -36,7 +36,13 @@ require('lazy').setup {
 
   -- LSPs
   { import = 'plugins.lsp' },
+
+  -- Format
   { import = 'plugins.conform' },
+
+  -- Git signs
   { import = 'plugins.gitsigns' },
+
+  -- Líneas de identación
   { import = 'plugins.ibl' },
 }
