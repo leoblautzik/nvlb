@@ -10,18 +10,18 @@ return {
       -- Configuración global de diagnósticos
       vim.diagnostic.config {
         virtual_text = true,
-        signs = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.INFO] = '󰋼',
+            [vim.diagnostic.severity.HINT] = '󰌵',
+          },
+        },
         underline = true,
         update_in_insert = false,
         severity_sort = true,
       }
-
-      -- 🔹 Definir iconos en el gutter
-      local signs = { Error = '', Warn = '', Hint = '', Info = '' }
-      for type, icon in pairs(signs) do
-        local hl = 'DiagnosticSign' .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
-      end
 
       -- Configuración moderna (sin require("lspconfig"))
       vim.lsp.config('clangd', {})
