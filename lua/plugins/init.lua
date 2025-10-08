@@ -47,4 +47,6 @@ require('lazy').setup {
   { import = 'plugins.ibl' },
 
   { import = 'plugins.harpoon' },
+
+  { import = 'plugins.which-key' },
 }
