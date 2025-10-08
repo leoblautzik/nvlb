@@ -1,3 +1,11 @@
+local function modified_indicator()
+  if vim.bo.modified then
+    return '●' -- o cualquier símbolo que quieras
+  else
+    return '✓' -- buffer guardado
+  end
+end
+
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' }, -- opcional pero recomendado
@@ -13,7 +21,7 @@ return {
       sections = {
         lualine_a = { { 'mode', icon = '', separator = { left = '', right = '' }, right_padding = 1 } },
         lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_c = { 'filename' },
+        lualine_c = { { modified_indicator }, 'filename' },
         lualine_x = { 'encoding', 'fileformat', 'filetype' },
         lualine_y = {
           {
@@ -29,7 +37,7 @@ return {
               for i, part in ipairs(last_parts) do
                 if part ~= '' then
                   if i < #last_parts then
-                    table.insert(short_parts, string.sub(part, 1, 3)) -- abrevia
+                    table.insert(short_parts, string.sub(part, 1, 2)) -- abrevia
                   else
                     table.insert(short_parts, part) -- último completo
                   end

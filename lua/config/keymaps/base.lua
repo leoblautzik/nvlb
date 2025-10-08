@@ -93,4 +93,37 @@ M.setup = function()
   end, { desc = 'Toggle Quickfix con diagnósticos' })
 end
 
+vim.keymap.set('n', '<leader>p', function()
+  local path = vim.fn.expand '%:p' -- ruta completa
+  if path == '' then
+    print 'Buffer sin archivo'
+    return
+  end
+  -- Reemplazar /home/usuario por ~
+  local home = vim.fn.expand '~'
+  if path:sub(1, #home) == home then
+    path = '~' .. path:sub(#home + 1)
+  end
+  -- Copiar al portapapeles y mostrar
+  print(path)
+end, { noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>pc', function()
+  local path = vim.fn.expand '%:p' -- ruta completa
+  if path == '' then
+    print 'Buffer sin archivo'
+    return
+  end
+
+  -- Reemplazar /home/usuario por ~
+  local home = vim.fn.expand '~'
+  if path:sub(1, #home) == home then
+    path = '~' .. path:sub(#home + 1)
+  end
+
+  -- Copiar al portapapeles y mostrar
+  vim.fn.setreg('+', path)
+  print('Ruta copiada: ' .. path)
+end, { noremap = true, silent = true })
+
 return M
