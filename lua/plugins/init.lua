@@ -45,4 +45,6 @@ require('lazy').setup {
 
   -- Líneas de identación
   { import = 'plugins.ibl' },
+
+  { import = 'plugins.harpoon' },
 }
