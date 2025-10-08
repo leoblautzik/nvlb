@@ -2,6 +2,7 @@ return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' }, -- opcional pero recomendado
   config = function()
+    ---@diagnostic disable-next-line: undefined-field
     require('lualine').setup {
       options = {
         --theme = "catppuccin", -- usa el tema automáticamente
@@ -14,7 +15,15 @@ return {
         lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { 'filename' },
         lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_y = { 'progress' },
+        lualine_y = {
+          {
+            function()
+              return vim.fn.fnamemodify(vim.fn.expand '%:p:h', ':.')
+            end,
+            icon = '', -- iconito de carpeta
+          },
+          'progress',
+        },
         lualine_z = { { 'location', separator = { left = '', right = '' }, left_padding = 1 } },
       },
     }
