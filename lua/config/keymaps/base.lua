@@ -92,38 +92,63 @@ M.setup = function()
     end
   end, { desc = 'Toggle Quickfix con diagnósticos' })
 end
+-------------------------------------------------------------------------------
+-- Todo esto es para mostrar la ruta con <leader>p
+-- Para mostrar y copiar al portapapeles <leader>pc
+-------------------------------------------------------------------------------
+-- Función para mostrar ruta abreviada (solo para <leader>p)
+local function get_short_path()
+  local path = vim.fn.expand '%:p'
+  if path == '' then
+    return nil
+  end
 
+  local home = vim.fn.expand '~'
+  if path:sub(1, #home) == home then
+    path = '~' .. path:sub(#home + 1)
+  end
+
+  local parts = vim.split(path, '/')
+
+  if #parts > 3 then
+    for i = 2, #parts - 2 do
+      if #parts[i] > 3 then
+        parts[i] = parts[i]:sub(1, 3)
+      end
+    end
+  end
+
+  return table.concat(parts, '/')
+end
+
+-- Función para mostrar temporalmente en la línea de comandos
+local function show_temp_message(msg, duration_ms)
+  vim.api.nvim_echo({ { msg, 'Normal' } }, false, {})
+  vim.defer_fn(function()
+    vim.cmd 'echo ""'
+  end, duration_ms or 3000) -- limpia después de 1.5s por defecto
+end
+
+-- <leader>p → mostrar ruta abreviada temporal
 vim.keymap.set('n', '<leader>p', function()
-  local path = vim.fn.expand '%:p' -- ruta completa
-  if path == '' then
-    print 'Buffer sin archivo'
-    return
+  local short_path = get_short_path()
+  if short_path then
+    show_temp_message(short_path)
+  else
+    show_temp_message 'Buffer sin archivo'
   end
-  -- Reemplazar /home/usuario por ~
-  local home = vim.fn.expand '~'
-  if path:sub(1, #home) == home then
-    path = '~' .. path:sub(#home + 1)
-  end
-  -- Copiar al portapapeles y mostrar
-  print(path)
 end, { noremap = true, silent = true })
 
+-- <leader>pc → mostrar y copiar ruta completa temporal
 vim.keymap.set('n', '<leader>pc', function()
-  local path = vim.fn.expand '%:p' -- ruta completa
-  if path == '' then
-    print 'Buffer sin archivo'
-    return
+  local full_path = vim.fn.expand '%:p'
+  if full_path == '' then
+    show_temp_message 'Buffer sin archivo'
+  else
+    vim.fn.setreg('+', full_path)
+    show_temp_message('Ruta copiada: ' .. full_path)
   end
-
-  -- Reemplazar /home/usuario por ~
-  local home = vim.fn.expand '~'
-  if path:sub(1, #home) == home then
-    path = '~' .. path:sub(#home + 1)
-  end
-
-  -- Copiar al portapapeles y mostrar
-  vim.fn.setreg('+', path)
-  print('Ruta copiada: ' .. path)
 end, { noremap = true, silent = true })
+-------------------------------------------------------------------------------
 
 return M
