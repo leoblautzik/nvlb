@@ -180,7 +180,6 @@ return {
   { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
   { 'ellisonleao/gruvbox.nvim', name = 'gruvbox' },
   { 'Mofiqul/dracula.nvim', name = 'dracula' },
-  { 'bluz71/vim-nightfly-colors', name = 'nightfly' },
 }
 
 -- return {
