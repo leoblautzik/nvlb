@@ -1,5 +1,14 @@
 local M = {}
 M.setup = function()
+  function M.show_user_nmaps()
+    for _, m in ipairs(vim.api.nvim_get_keymap 'n') do
+      local info = vim.fn.maparg(m.lhs, 'n', false, true)
+      local sid = info.sid and tonumber(info.sid) or 0
+      if sid == 0 then
+        print(string.format('%-25s → %s', m.lhs, m.rhs or ''))
+      end
+    end
+  end
   --------------------------------------------------------------------------------
   -- Resaltar seleccion al copiar (yank)
   --------------------------------------------------------------------------------
