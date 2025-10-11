@@ -23,6 +23,7 @@ function M.setup()
   o.cursorline = true
   o.termguicolors = true
   o.signcolumn = 'yes'
+  o.winborder = 'rounded'
 
   -- Archivos y undo
   o.swapfile = false
