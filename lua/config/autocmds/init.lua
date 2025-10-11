@@ -1,6 +1,0 @@
-require("config.autocmds.cursor").setup()
-require("config.autocmds.numbers").setup()
-require("config.autocmds.yank").setup()
-require("config.autocmds.python").setup()
-require("config.autocmds.c").setup()
-require("config.autocmds.terminal").setup()

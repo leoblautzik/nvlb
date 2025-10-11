@@ -1,30 +1,34 @@
 -- lua/config/options.lua
-local o = vim.opt
-local g = vim.g
+local M = {}
 
--- Leader
-g.mapleader = ' '
+function M.setup()
+  local o = vim.opt
+  local g = vim.g
 
--- Indentación
-o.expandtab = true
-o.smartindent = true
-o.tabstop = 4
-o.softtabstop = 4
-o.shiftwidth = 4
-o.backspace = { 'indent', 'eol', 'start' }
+  -- Leader
+  g.mapleader = ' '
 
--- Interfaz
-o.number = true
-o.relativenumber = true
-o.showmode = false
-o.cursorline = true
-o.termguicolors = true
-o.signcolumn = 'yes'
+  -- Indentación
+  o.expandtab = true
+  o.smartindent = true
+  o.tabstop = 4
+  o.softtabstop = 4
+  o.shiftwidth = 4
+  o.backspace = { 'indent', 'eol', 'start' }
 
--- Archivos y undo
-o.swapfile = false
-o.undofile = true
--- Directorio de undo específico del entorno NVIM_APPNAME
-o.undodir = vim.fn.stdpath 'state' .. '/undo'
+  -- Interfaz
+  o.number = true
+  o.relativenumber = true
+  o.showmode = false
+  o.cursorline = true
+  o.termguicolors = true
+  o.signcolumn = 'yes'
 
---vim.cmd.colorscheme("retrobox")
+  -- Archivos y undo
+  o.swapfile = false
+  o.undofile = true
+  -- Directorio de undo específico del entorno NVIM_APPNAME
+  o.undodir = vim.fn.stdpath 'state' .. '/undo'
+end
+
+return M
