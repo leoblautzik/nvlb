@@ -180,6 +180,26 @@ return {
   { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
   { 'ellisonleao/gruvbox.nvim', name = 'gruvbox' },
   { 'Mofiqul/dracula.nvim', name = 'dracula' },
+  { 'bluz71/vim-nightfly-colors', name = 'nightfly' },
+  {
+    'sainnhe/gruvbox-material',
+    name = 'gruvbox-material',
+    config = function()
+      vim.g.gruvbox_material_background = 'hard'
+      vim.g.gruvbox_material_foregraund = 'mix'
+      vim.g.gruvbox_material_ui_contrast = 'high'
+    end,
+  },
+  {
+    'navarasu/onedark.nvim',
+    config = function()
+      require('onedark').setup {
+        style = 'darker',
+      }
+      -- Enable theme
+      require('onedark').load()
+    end,
+  },
 }
 
 -- return {
