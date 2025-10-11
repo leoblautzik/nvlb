@@ -2,20 +2,68 @@ return {
   {
     'catppuccin/nvim',
     name = 'catppuccin',
-    -- priority = 1000,
+    lazy = false, -- cargar inmediatamente
+    priority = 1000, -- para que el tema se aplique primero
     config = function()
-      -- vim.cmd [[colorscheme catppuccin-mocha]]
+      vim.cmd [[colorscheme catppuccin-mocha]]
     end,
   },
 
+  -- {
+  --   'catppuccin/nvim',
+  --   name = 'catppuccin',
+  --   lazy = false, -- cargar inmediatamente
+  --   priority = 1000, -- para que el tema se aplique primero
+  --   config = function()
+  --     require('catppuccin').setup {
+  --       flavour = 'mocha', -- latte, frappe, macchiato, mocha
+  --       background = { light = 'latte', dark = 'mocha' },
+  --       transparent_background = false,
+  --       term_colors = true,
+  --       styles = {
+  --         comments = { 'italic' },
+  --         conditionals = { 'italic' },
+  --         loops = {},
+  --         functions = { 'bold' },
+  --         keywords = { 'italic' },
+  --         strings = {},
+  --         variables = {},
+  --         numbers = {},
+  --         booleans = {},
+  --         properties = {},
+  --         types = {},
+  --         operators = {},
+  --       },
+  --
+  --       integrations = {
+  --         treesitter = true,
+  --         cmp = true,
+  --         telescope = true,
+  --         gitsigns = true,
+  --         which_key = true,
+  --         indent_blankline = { enabled = true },
+  --         native_lsp = {
+  --           enabled = true,
+  --           underlines = {
+  --             errors = { 'underline' },
+  --             hints = { 'underline' },
+  --             warnings = { 'underline' },
+  --             information = { 'underline' },
+  --           },
+  --         },
+  --       },
+  --     }
+  --     vim.cmd [[colorscheme catppuccin-mocha]]
+  --   end,
+  -- },
   {
     'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    config = function()
-      vim.cmd [[colorscheme tokyonight-night]]
-    end,
+    -- lazy = false,
+    -- priority = 1000,
+    -- opts = {},
+    -- config = function()
+    --   vim.cmd [[colorscheme tokyonight-night]]
+    -- end,
   },
   {
     'sainnhe/gruvbox-material',

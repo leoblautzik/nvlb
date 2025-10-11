@@ -8,7 +8,7 @@ return {
   keys = {
     -- 🔍 Búsqueda general
     { '<leader>ff', '<cmd>Telescope find_files<CR>', desc = 'Buscar archivos' },
-    { '<leader>fg', '<cmd>Telescope live_grep<CR>', desc = 'Buscar texto' },
+    { '<leader>fw', '<cmd>Telescope live_grep<CR>', desc = 'Buscar texto' },
     { '<leader><leader>', '<cmd>Telescope buffers<CR>', desc = 'Buffers abiertos' },
     { '<leader>fh', '<cmd>Telescope help_tags<CR>', desc = 'Ayuda' },
     { '<leader>km', '<cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
