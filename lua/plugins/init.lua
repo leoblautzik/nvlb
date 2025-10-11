@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   -- Tema
-  { import = 'plugins.themes' },
+  { import = 'plugins.theme' },
 
   -- Treesitter
   { import = 'plugins.treesitter' },

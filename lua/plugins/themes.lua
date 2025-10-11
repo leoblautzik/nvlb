@@ -82,27 +82,27 @@ local function pick_theme()
   end, themes)
 
   -- Agrupación visual opcional
-  local entries = {}
-  for _, name in ipairs(filtered_themes) do
-    local group = name:match '^(%a+fox)$' or name:match '^(catppuccin)' or name:match '^(tokyonight)'
-    if group and name ~= group then
-      table.insert(entries, string.format('%s → %s', group, name))
-    else
-      table.insert(entries, name)
-    end
-  end
+  -- local entries = {}
+  -- for _, name in ipairs(filtered_themes) do
+  --   local group = name:match '^(%a+fox)$' or name:match '^(catppuccin)' or name:match '^(tokyonight)'
+  --   if group and name ~= group then
+  --     table.insert(entries, string.format('%s → %s', group, name))
+  --   else
+  --     table.insert(entries, name)
+  --   end
+  -- end
 
   pickers
     .new({}, {
       prompt_title = 'Seleccionar tema',
-      finder = finders.new_table {
-        results = entries,
-        entry_maker = function(entry)
-          local real = entry:match '→%s*(%S+)$' or entry
-          return { value = real, display = entry, ordinal = entry }
-        end,
-      },
-      sorter = conf.generic_sorter {},
+      -- finder = finders.new_table {
+      --   results = entries,
+      --   entry_maker = function(entry)
+      --     local real = entry:match '→%s*(%S+)$' or entry
+      --     return { value = real, display = entry, ordinal = entry }
+      --   end,
+      -- },
+      -- sorter = conf.generic_sorter {},
       attach_mappings = function(prompt_bufnr, map)
         local last_previewed = nil
 
@@ -165,136 +165,136 @@ vim.api.nvim_create_autocmd('User', {
   pattern = 'VeryLazy',
   callback = function()
     local last = load_last_theme() or 'catppuccin'
-    set_theme(last, false)
+    set_theme(last, true)
   end,
 })
 
 ------------------------------------------------
 -- Plugins de temas
 ------------------------------------------------
-return {
-  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000, lazy = false },
-  { 'rose-pine/neovim', name = 'rose-pine' },
-  { 'folke/tokyonight.nvim', name = 'tokyonight' },
-  { 'EdenEast/nightfox.nvim', name = 'nightfox' },
-  { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
-  { 'ellisonleao/gruvbox.nvim', name = 'gruvbox' },
-  { 'Mofiqul/dracula.nvim', name = 'dracula' },
-  { 'bluz71/vim-nightfly-colors', name = 'nightfly' },
-  {
-    'sainnhe/gruvbox-material',
-    name = 'gruvbox-material',
-    config = function()
-      vim.g.gruvbox_material_background = 'hard'
-      vim.g.gruvbox_material_foregraund = 'mix'
-      vim.g.gruvbox_material_ui_contrast = 'high'
-    end,
-  },
-  {
-    'navarasu/onedark.nvim',
-    config = function()
-      require('onedark').setup {
-        style = 'darker',
-      }
-      -- Enable theme
-      require('onedark').load()
-    end,
-  },
-}
-
 -- return {
+--   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000, lazy = false },
+--   { 'rose-pine/neovim', name = 'rose-pine' },
+--   { 'folke/tokyonight.nvim', name = 'tokyonight' },
+--   { 'EdenEast/nightfox.nvim', name = 'nightfox' },
+--   { 'rebelot/kanagawa.nvim', name = 'kanagawa' },
+--   { 'ellisonleao/gruvbox.nvim', name = 'gruvbox' },
+--   { 'Mofiqul/dracula.nvim', name = 'dracula' },
+--   { 'bluz71/vim-nightfly-colors', name = 'nightfly' },
 --   {
---     'catppuccin/nvim',
---     name = 'catppuccin',
---     lazy = false, -- cargar inmediatamente
---     priority = 1000, -- para que el tema se aplique primero
+--     'sainnhe/gruvbox-material',
+--     name = 'gruvbox-material',
 --     config = function()
---       require('catppuccin').setup {
---         flavour = 'mocha', -- latte, frappe, macchiato, mocha
---         background = { light = 'latte', dark = 'mocha' },
---         transparent_background = false,
---         term_colors = true,
---         styles = {
---           comments = { 'italic' },
---           conditionals = { 'italic' },
---           loops = {},
---           functions = { 'bold' },
---           keywords = { 'italic' },
---           strings = {},
---           variables = {},
---           numbers = {},
---           booleans = {},
---           properties = {},
---           types = {},
---           operators = {},
---         },
---
---         integrations = {
---           treesitter = true,
---           cmp = true,
---           telescope = true,
---           gitsigns = true,
---           which_key = true,
---           indent_blankline = { enabled = true },
---           native_lsp = {
---             enabled = true,
---             underlines = {
---               errors = { 'underline' },
---               hints = { 'underline' },
---               warnings = { 'underline' },
---               information = { 'underline' },
---             },
---           },
---         },
---       }
+--       vim.g.gruvbox_material_background = 'hard'
+--       vim.g.gruvbox_material_foregraund = 'mix'
+--       vim.g.gruvbox_material_ui_contrast = 'high'
 --     end,
 --   },
---
---   -- Rose Pine
 --   {
---     'rose-pine/neovim',
---     name = 'rose-pine',
+--     'navarasu/onedark.nvim',
 --     config = function()
---       require('rose-pine').setup {
---         variant = 'moon', -- auto, main, moon, dawn
---         dark_variant = 'moon', -- main, moon, or dawn
---         disable_background = false,
---         styles = {
---           bold = false,
---           italic = false,
---           transparency = false,
---         },
+--       require('onedark').setup {
+--         style = 'darker',
 --       }
---     end,
---   },
---
---   -- Tokyo Night
---   {
---     'folke/tokyonight.nvim',
---     name = 'tokyonight',
---     config = function()
---       require('tokyonight').setup {
---         style = 'night', -- storm, night, moon, day
---         transparent = false,
---         terminal_colors = true,
---       }
---     end,
---   },
---
---   { 'EdenEast/nightfox.nvim' },
---
---   { 'rebelot/kanagawa.nvim' },
---
---   { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = ... },
---
---   {
---     'Mofiqul/dracula.nvim',
---     name = 'dracula',
---     config = function()
---       require('dracula').setup {
---         style = 'default', -- Variante más dark del tema
---         -- otras opciones...
---       }
+--       -- Enable theme
+--       require('onedark').load()
 --     end,
 --   },
 -- }
+
+return {
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    lazy = false, -- cargar inmediatamente
+    priority = 1000, -- para que el tema se aplique primero
+    config = function()
+      require('catppuccin').setup {
+        flavour = 'mocha', -- latte, frappe, macchiato, mocha
+        background = { light = 'latte', dark = 'mocha' },
+        transparent_background = false,
+        term_colors = true,
+        styles = {
+          comments = { 'italic' },
+          conditionals = { 'italic' },
+          loops = {},
+          functions = { 'bold' },
+          keywords = { 'italic' },
+          strings = {},
+          variables = {},
+          numbers = {},
+          booleans = {},
+          properties = {},
+          types = {},
+          operators = {},
+        },
+
+        integrations = {
+          treesitter = true,
+          cmp = true,
+          telescope = true,
+          gitsigns = true,
+          which_key = true,
+          indent_blankline = { enabled = true },
+          native_lsp = {
+            enabled = true,
+            underlines = {
+              errors = { 'underline' },
+              hints = { 'underline' },
+              warnings = { 'underline' },
+              information = { 'underline' },
+            },
+          },
+        },
+      }
+    end,
+  },
+
+  -- Rose Pine
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    config = function()
+      require('rose-pine').setup {
+        variant = 'moon', -- auto, main, moon, dawn
+        dark_variant = 'moon', -- main, moon, or dawn
+        disable_background = false,
+        styles = {
+          bold = false,
+          italic = false,
+          transparency = false,
+        },
+      }
+    end,
+  },
+
+  -- Tokyo Night
+  {
+    'folke/tokyonight.nvim',
+    name = 'tokyonight',
+    config = function()
+      require('tokyonight').setup {
+        style = 'night', -- storm, night, moon, day
+        transparent = false,
+        terminal_colors = true,
+      }
+    end,
+  },
+
+  { 'EdenEast/nightfox.nvim' },
+
+  { 'rebelot/kanagawa.nvim' },
+
+  { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = ... },
+
+  {
+    'Mofiqul/dracula.nvim',
+    name = 'dracula',
+    config = function()
+      require('dracula').setup {
+        style = 'default', -- Variante más dark del tema
+        -- otras opciones...
+      }
+    end,
+  },
+}

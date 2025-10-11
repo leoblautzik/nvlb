@@ -12,6 +12,7 @@ return {
     { '<leader><leader>', '<cmd>Telescope buffers<CR>', desc = 'Buffers abiertos' },
     { '<leader>fh', '<cmd>Telescope help_tags<CR>', desc = 'Ayuda' },
     { '<leader>km', '<cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
+    { '<leader>tth', '<cmd>Telescope colorscheme<CR>', desc = 'Elegir colorscheme con Telescope' },
 
     -- 🧭 Git
     { '<leader>gc', '<cmd>Telescope git_commits<CR>', desc = 'Commits' },
