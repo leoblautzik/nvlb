@@ -25,9 +25,44 @@ return {
       }
 
       -- Configuración moderna (sin require("lspconfig"))
-      vim.lsp.config('clangd', {})
-      vim.lsp.config('pyright', {})
-      vim.lsp.config('gopls', {})
+      vim.lsp.config('clangd', {
+        cmd = { 'clangd', '--background-index' },
+        init_options = { clangdFileStatus = true },
+      })
+      vim.lsp.config('pyright', {
+        settings = {
+          python = {
+            analysis = {
+              typeCheckingMode = 'off',
+              diagnosticMode = 'openFilesOnly',
+              autoImportCompletions = true,
+              useLibraryCodeForTypes = false,
+            },
+          },
+        },
+      })
+      vim.lsp.config('ruff', {
+        init_options = {
+          settings = {
+            args = {}, -- Si querés --line-length=100 lo agregás acá
+          },
+        },
+        -- ⚠️ IMPORTANTE: deshabilitamos el formateo para que lo haga Conform
+        on_attach = function(client)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+        end,
+      })
+      vim.lsp.config('gopls', {
+        settings = {
+          gopls = {
+            analyses = { unusedparams = true },
+            staticcheck = true,
+            completeUnimported = true,
+            usePlaceholders = true,
+          },
+        },
+      })
       vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
@@ -73,18 +108,6 @@ return {
           'stylua',
         },
         automatic_installation = true,
-      }
-    end,
-  },
-
-  -- ✨ Firma de funciones flotante
-  {
-    'ray-x/lsp_signature.nvim',
-    event = 'BufRead',
-    config = function()
-      require('lsp_signature').setup {
-        bind = true,
-        floating_window = true,
       }
     end,
   },

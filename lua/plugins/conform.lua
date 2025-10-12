@@ -1,36 +1,28 @@
 return {
-	{
-		"stevearc/conform.nvim",
-		event = "BufReadPre",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local conform = require("conform")
-			conform.setup({
-				formatters_by_ft = {
-					python = { "ruff_format" },
-					lua = { "stylua" },
-					c = { "clang-format" },
-					go = {
-						"gofmt",
-						"goimports-reviser",
-						"gofumpt",
-						"golines",
-					},
-				},
-				linter_by_ft = {
-					python = { "ruff" },
-					lua = { "luacheck" },
-					c = { "clang-tidy" },
-					go = { "golangci-lint" },
-				},
-				format_on_save = true,
-				async = true,
-			})
+  {
+    'stevearc/conform.nvim',
+    event = 'BufReadPre',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local conform = require 'conform'
 
-			-- Keymap opcional para formatear manual
-			vim.keymap.set("n", "<leader>cf", function()
-				conform.format({ async = true })
-			end, { desc = "Conform: format current buffer" })
-		end,
-	},
+      conform.setup {
+        formatters_by_ft = {
+          python = { 'ruff_format' }, -- Ruff como formatter único
+          lua = { 'stylua' },
+          c = { 'clang-format' },
+          go = { 'gofumpt', 'goimports-reviser', 'golines' },
+        },
+
+        -- Formateo al guardar (opcional)
+        format_after_save = true,
+      }
+
+      -- Keymap manual con mensaje en la línea de comandos
+      vim.keymap.set('n', '<leader>cf', function()
+        conform.format { async = true, lsp_fallback = true }
+        print 'Buffer formateado con Conform' -- aparece en la línea de comandos
+      end, { desc = 'Conform: format current buffer' })
+    end,
+  },
 }

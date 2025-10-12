@@ -13,7 +13,7 @@ require('config.autocmds').setup()
 require 'plugins'
 
 -- LSP servers
-require('config.lsp').setup()
+-- require('config.lsp').setup()
 
 -- Snippets
 -- require 'snippets'
