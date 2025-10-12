@@ -9,8 +9,8 @@ return {
     config = function()
       -- Configuración global de diagnósticos
       vim.diagnostic.config {
-        virtual_lines = true,
-        -- virtual_text = true,
+        -- virtual_lines = true,
+        virtual_text = true,
         signs = {
           text = {
             [vim.diagnostic.severity.ERROR] = '',

@@ -48,7 +48,36 @@ function M.setup()
             autoImportCompletions = true,
             autoSearchPaths = true,
             useLibraryCodeForTypes = true,
-            diagnosticMode = 'workspace',
+            -- diagnosticMode = 'workspace',
+            diagnosticMode = 'openFilesOnly',
+          },
+        },
+      },
+    },
+    -- Python: Pylsp
+    pylsp = {
+      cmd = { 'pylsp' },
+      filetypes = { 'python' },
+      root_dir = vim.fs.dirname(vim.fs.find({ '.git', 'pyproject.toml', 'setup.py' }, { upward = true })[1]),
+      settings = {
+        pylsp = {
+          plugins = {
+            autopep8 = { enabled = false },
+            yapf = { enabled = false },
+            black = { enabled = false },
+            pylsp_black = { enabled = false },
+            pylsp_isort = { enabled = false },
+            pycodestyle = { enabled = false },
+            pyflakes = { enabled = false },
+            mccabe = { enabled = false },
+
+            pylsp_mypy = { enabled = true },
+            pylsp_rope = { enabled = true },
+            ruff = { enabled = true, format = true },
+            pylsp_pylint = {
+              enabled = true,
+              args = { '--disable=all', '--enable=missing-docstring' },
+            },
           },
         },
       },
