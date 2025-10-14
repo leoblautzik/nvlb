@@ -12,6 +12,20 @@ M.setup = function()
   -- map("n", "<leader>w", ":w<CR>", { silent = true })
 
   -------------------------------------------------------------------------------
+  -- Deshabilitar PgUp y PgDn en todos los modos
+  -------------------------------------------------------------------------------
+  map('', '<PageUp>', '<Nop>', { noremap = true, silent = true })
+  map('', '<PageDown>', '<Nop>', { noremap = true, silent = true })
+
+  -------------------------------------------------------------------------------
+  -- Deshabilitar flechas en modo normal
+  -------------------------------------------------------------------------------
+  map('n', '<Up>', '<Nop>', { noremap = true, silent = true })
+  map('n', '<Down>', '<Nop>', { noremap = true, silent = true })
+  map('n', '<Left>', '<Nop>', { noremap = true, silent = true })
+  map('n', '<Right>', '<Nop>', { noremap = true, silent = true })
+
+  -------------------------------------------------------------------------------
   -- Navegación con netrw
   -------------------------------------------------------------------------------
   -- Toggle netrw con \

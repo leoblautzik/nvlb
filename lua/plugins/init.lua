@@ -31,6 +31,9 @@ require('lazy').setup {
   -- CMP + autopairs
   { import = 'plugins.cmp' },
 
+  -- blink + autopairs
+  -- { import = 'plugins.blink' },
+
   -- Tmux navigator
   { import = 'plugins.tmux-navigator' },
 

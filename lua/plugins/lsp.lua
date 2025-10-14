@@ -37,16 +37,18 @@ return {
         severity_sort = true,
       }
 
-      -- Configuración moderna (sin require("lspconfig"))
+      -- Configuración severs (sin require("lspconfig"))
+      --
       vim.lsp.config('clangd', {
         cmd = { 'clangd', '--background-index' },
         init_options = { clangdFileStatus = true },
       })
+
       vim.lsp.config('pyright', {
         settings = {
           python = {
             analysis = {
-              typeCheckingMode = 'off',
+              typeCheckingMode = 'basic',
               diagnosticMode = 'openFilesOnly',
               autoImportCompletions = true,
               useLibraryCodeForTypes = false,
@@ -66,6 +68,7 @@ return {
           client.server_capabilities.documentRangeFormattingProvider = false
         end,
       })
+
       vim.lsp.config('gopls', {
         settings = {
           gopls = {
@@ -76,6 +79,7 @@ return {
           },
         },
       })
+
       vim.lsp.config('lua_ls', {
         settings = {
           Lua = {
