@@ -40,7 +40,8 @@ return {
       -- Configuración severs (sin require("lspconfig"))
       --
       vim.lsp.config('clangd', {
-        cmd = { 'clangd', '--background-index' },
+        cmd = { 'clangd', '--background-index', '--header-insertion=never' },
+        capabilities = require('cmp_nvim_lsp').default_capabilities(),
         init_options = { clangdFileStatus = true },
       })
 
