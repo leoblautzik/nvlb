@@ -52,4 +52,6 @@ require('lazy').setup {
   { import = 'plugins.harpoon' },
 
   { import = 'plugins.which-key' },
+
+  { import = 'plugins.nvim-surround' },
 }
