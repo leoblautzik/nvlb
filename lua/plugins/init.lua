@@ -54,4 +54,5 @@ require('lazy').setup {
   { import = 'plugins.which-key' },
 
   { import = 'plugins.nvim-surround' },
+  { import = 'plugins.neotest' },
 }

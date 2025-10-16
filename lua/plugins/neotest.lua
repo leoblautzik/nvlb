@@ -1,0 +1,49 @@
+return {
+  {
+    'nvim-neotest/neotest',
+    commit = 'dddbe8fe358b05b2b7e54fe4faab50563171a76d',
+    dependencies = {
+      'nvim-neotest/nvim-nio',
+      'nvim-lua/plenary.nvim',
+      'antoinemadec/FixCursorHold.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      {
+        'nvim-neotest/neotest-go',
+      },
+
+      'nvim-neotest/neotest-python',
+    },
+    config = function()
+      local neotest = require 'neotest'
+
+      neotest.setup {
+        adapters = {
+          require 'neotest-python' {
+            dap = { justMyCode = false },
+            runner = 'pytest',
+          },
+          require 'neotest-go' {
+            experimental = { test_table = true },
+            args = { '-v' },
+          },
+        },
+      }
+
+      local map = vim.keymap.set
+      local opts = { noremap = true, silent = true }
+
+      map('n', '<leader>tn', function()
+        neotest.run.run()
+      end, opts)
+      map('n', '<leader>ta', function()
+        neotest.run.run(vim.fn.expand '%')
+      end, opts)
+      map('n', '<leader>ts', function()
+        neotest.summary.toggle()
+      end, opts)
+      map('n', '<leader>ti', function()
+        neotest.output.open { enter = true }
+      end, opts)
+    end,
+  },
+}
