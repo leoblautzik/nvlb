@@ -19,7 +19,27 @@ return {
         component_separators = '', -- { left = "", right = "" },
       },
       sections = {
-        lualine_a = { { 'mode', icon = '', separator = { left = '', right = '' }, right_padding = 1 } },
+        lualine_a = {
+          {
+            'mode',
+            fmt = function(str)
+              local map = {
+                ['NORMAL'] = 'N',
+                ['INSERT'] = 'I',
+                ['VISUAL'] = 'V',
+                ['V-LINE'] = 'VL',
+                ['V-BLOCK'] = 'VB',
+                ['REPLACE'] = 'R',
+                ['COMMAND'] = 'C',
+                ['TERMINAL'] = 'T',
+              }
+              return map[str] or str:sub(1, 1)
+            end,
+            icon = '',
+            separator = { left = '', right = '' },
+            right_padding = 1,
+          },
+        },
         lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { { modified_indicator }, 'filename' },
         lualine_x = { 'encoding', 'fileformat', 'filetype' },

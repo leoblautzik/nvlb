@@ -38,7 +38,7 @@ function M.setup()
   o.showmatch = true -- Highlight matching brackets
   o.matchtime = 2 -- How long to show matching bracket
   o.cmdheight = 1 -- Command line height
-  --o.completeopt = 'menuone,noinsert,noselect' -- Completion options
+  o.completeopt = 'menuone,noinsert,noselect' -- Completion options
   o.showmode = false -- Don't show mode in command line
   -- o.pumheight = 10 -- Popup menu height
   -- o.pumblend = 10 -- Popup menu transparency
@@ -54,11 +54,11 @@ function M.setup()
   o.writebackup = false -- Don't create backup before writing
   o.swapfile = false -- Don't create swap files
   o.undofile = true -- Persistent undo
-  -- o.updatetime = 300 -- Faster completion
-  -- o.timeoutlen = 500 -- Key timeout duration
-  -- o.ttimeoutlen = 0 -- Key code timeout
-  -- o.autoread = true -- Auto reload files changed outside vim
-  -- o.autowrite = false -- Don't auto save
+  o.updatetime = 300 -- Faster completion
+  o.timeoutlen = 500 -- Key timeout duration
+  o.ttimeoutlen = 0 -- Key code timeout
+  o.autoread = true -- Auto reload files changed outside vim
+  o.autowrite = false -- Don't auto save
   -- Directorio de undo específico del entorno NVIM_APPNAME
   o.undodir = vim.fn.stdpath 'state' .. '/undo'
 

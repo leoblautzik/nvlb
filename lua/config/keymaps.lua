@@ -105,15 +105,15 @@ M.setup = function()
   map('n', '<leader>ex', runner.run_file, { desc = 'Ejecutar archivo actual' })
 
   -- Go Test
-  map('n', '<leader>gn', runner.run_test_under_cursor, { desc = 'Go: test bajo cursor' })
-  map('n', '<leader>ga', runner.run_tests_in_file, { desc = 'Go: todos los tests del archivo' })
-  map('n', '<leader>gA', function()
+  map('n', '<leader>tgn', runner.run_test_under_cursor, { desc = 'Go: test bajo cursor' })
+  -- map('n', '<leader>tga', runner.run_tests_in_file, { desc = 'Go: todos los tests del archivo' })
+  map('n', '<leader>tga', function()
     runner.run_tests_in_file(true)
   end, { desc = 'Go: tests archivo (verbose)' })
 
   -- Python Test
-  -- map("n", "<leader>pt", runner.run_pytest_under_cursor, { desc = "Py: test bajo cursor" })
-  map('n', '<leader>pa', runner.run_pytests_in_file, { desc = 'Py: todos los tests del archivo' })
+  map('n', '<leader>tpn', runner.run_pytest_under_cursor, { desc = 'Py: test bajo cursor' })
+  map('n', '<leader>tpa', runner.run_pytests_in_file, { desc = 'Py: todos los tests del archivo' })
 
   -- Cerrar panel de ejecución
   map('n', '<leader>ec', function()
