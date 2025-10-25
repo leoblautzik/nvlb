@@ -6,34 +6,28 @@ return {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      -- 🧭 Función on_attach: mapea teclas cuando el LSP está activo
+      -- 🔹 Teclas comunes a todos los LSPs
       local on_attach = function(_, bufnr)
-        local opts = { buffer = bufnr, silent = true, noremap = true }
-
-        -- Navegación LSP
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
-        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+        local map = function(lhs, rhs)
+          vim.keymap.set('n', lhs, rhs, { buffer = bufnr, silent = true, noremap = true })
+        end
+        local lsp, diag = vim.lsp.buf, vim.diagnostic
+        map('gd', lsp.definition)
+        map('gD', lsp.declaration)
+        map('gi', lsp.implementation)
+        map('go', lsp.type_definition)
+        map('gr', lsp.references)
+        map('K', lsp.hover)
+        map('<leader>rn', lsp.rename)
+        map('<leader>ca', lsp.code_action)
+        map('<leader>e', diag.open_float)
+        map('[d', diag.goto_prev)
+        map(']d', diag.goto_next)
       end
 
-      -- ⚙️ Configuración global de diagnósticos
+      -- ⚙️ Diagnósticos globales
       vim.diagnostic.config {
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local msg = diagnostic.message
-            return msg
-          end,
-        },
+        virtual_text = { source = 'if_many', spacing = 2 },
         signs = {
           text = {
             [vim.diagnostic.severity.ERROR] = '',
@@ -47,84 +41,80 @@ return {
         severity_sort = true,
       }
 
-      -- 🔧 Configuración de servidores LSP
-      vim.lsp.config('clangd', {
-        cmd = { 'clangd', '--background-index', '--header-insertion=never' },
-        init_options = { clangdFileStatus = true },
-        on_attach = on_attach,
-      })
+      -- 🧩 Configuración de servidores
+      local servers = {
+        clangd = {
+          cmd = { 'clangd', '--background-index', '--header-insertion=never' },
+          init_options = { clangdFileStatus = true },
+        },
 
-      vim.lsp.config('pyright', {
-        on_attach = on_attach,
-        settings = {
-          python = {
-            analysis = {
-              typeCheckingMode = 'basic',
-              diagnosticMode = 'openFilesOnly',
-              autoImportCompletions = true,
-              useLibraryCodeForTypes = false,
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = 'basic',
+                diagnosticMode = 'openFilesOnly',
+                autoImportCompletions = true,
+                useLibraryCodeForTypes = false,
+              },
             },
           },
         },
-      })
 
-      vim.lsp.config('ruff', {
-        on_attach = function(client, bufnr)
-          client.server_capabilities.documentFormattingProvider = false
-          client.server_capabilities.documentRangeFormattingProvider = false
-          on_attach(client, bufnr)
-        end,
-      })
-
-      vim.lsp.config('gopls', {
-        on_attach = on_attach,
-        settings = {
-          gopls = {
-            analyses = { unusedparams = true },
-            staticcheck = true,
-            completeUnimported = true,
-            usePlaceholders = true,
-          },
+        ruff = {
+          init_options = { settings = { args = {} } },
+          on_attach = function(client, bufnr)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+            on_attach(client, bufnr)
+          end,
         },
-      })
 
-      vim.lsp.config('lua_ls', {
-        on_attach = on_attach,
-        settings = {
-          Lua = {
-            runtime = { version = 'LuaJIT' },
-            diagnostics = { globals = { 'vim' } },
-            workspace = {
-              library = vim.api.nvim_get_runtime_file('', true),
-              checkThirdParty = false,
+        gopls = {
+          settings = {
+            gopls = {
+              analyses = { unusedparams = true },
+              staticcheck = true,
+              completeUnimported = true,
+              usePlaceholders = true,
             },
-            telemetry = { enable = false },
           },
         },
-      })
+
+        lua_ls = {
+          settings = {
+            Lua = {
+              runtime = { version = 'LuaJIT' },
+              diagnostics = { globals = { 'vim' } },
+              workspace = {
+                library = vim.api.nvim_get_runtime_file('', true),
+                checkThirdParty = false,
+              },
+              telemetry = { enable = false },
+            },
+          },
+        },
+      }
+
+      -- 🚀 Registro unificado
+      for name, config in pairs(servers) do
+        config.on_attach = config.on_attach or on_attach
+        vim.lsp.config(name, config)
+      end
     end,
   },
 
   {
     'williamboman/mason.nvim',
     build = ':MasonUpdate',
-    config = function()
-      require('mason').setup()
-    end,
+    config = true,
   },
 
   {
     'williamboman/mason-lspconfig.nvim',
     config = function()
       require('mason-lspconfig').setup {
-        ensure_installed = {
-          'clangd',
-          'pyright',
-          'ruff',
-          'gopls',
-          'lua_ls',
-          'stylua',
-        },
+        ensure_installed = { 'clangd', 'pyright', 'ruff', 'gopls', 'lua_ls', 'stylua' },
         automatic_installation = true,
       }
     end,
