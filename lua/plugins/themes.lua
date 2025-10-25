@@ -21,27 +21,27 @@ return {
     --   vim.cmd [[colorscheme tokyonight-night]]
     -- end,
   },
-  {
-    'sainnhe/gruvbox-material',
-    name = 'gruvbox-material',
-    config = function()
-      vim.g.gruvbox_material_background = 'hard'
-      vim.g.gruvbox_material_foregraund = 'mix'
-      vim.g.gruvbox_material_ui_contrast = 'high'
-      -- vim.cmd [[colorscheme gruvbox_material ]]
-    end,
-  },
-  {
-    'navarasu/onedark.nvim',
-    -- priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      require('onedark').setup {
-        style = 'deep',
-      }
-      -- Enable theme
-      -- require('onedark').load()
-    end,
-  },
+  -- {
+  --   'sainnhe/gruvbox-material',
+  --   name = 'gruvbox-material',
+  --   config = function()
+  --     vim.g.gruvbox_material_background = 'hard'
+  --     vim.g.gruvbox_material_foregraund = 'mix'
+  --     vim.g.gruvbox_material_ui_contrast = 'high'
+  --     -- vim.cmd [[colorscheme gruvbox_material ]]
+  --   end,
+  -- },
+  -- {
+  --   'navarasu/onedark.nvim',
+  --   -- priority = 1000, -- make sure to load this before all the other start plugins
+  --   config = function()
+  --     require('onedark').setup {
+  --       style = 'deep',
+  --     }
+  --     -- Enable theme
+  --     -- require('onedark').load()
+  --   end,
+  -- },
 
   {
     'rose-pine/neovim',
@@ -60,7 +60,7 @@ return {
       }
     end,
   },
-  { 'EdenEast/nightfox.nvim' },
-
-  { 'rebelot/kanagawa.nvim' },
+  -- { 'EdenEast/nightfox.nvim' },
+  --
+  -- { 'rebelot/kanagawa.nvim' },
 }

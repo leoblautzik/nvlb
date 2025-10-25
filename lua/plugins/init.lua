@@ -29,10 +29,11 @@ require('lazy').setup {
   { import = 'plugins.telescope' },
 
   -- CMP + autopairs
-  { import = 'plugins.cmp' },
+  -- { import = 'plugins.cmp' },
 
   -- blink + autopairs
-  -- { import = 'plugins.blink' },
+  { import = 'plugins.autopairs' },
+  { import = 'plugins.blink' },
 
   -- Tmux navigator
   { import = 'plugins.tmux-navigator' },
@@ -53,6 +54,7 @@ require('lazy').setup {
 
   { import = 'plugins.which-key' },
 
-  { import = 'plugins.nvim-surround' },
+  { import = 'plugins.mini-nvim' },
+
   { import = 'plugins.neotest' },
 }

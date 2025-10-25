@@ -2,28 +2,38 @@
 local vim = vim
 
 return {
-  -- 🧩 LSP principal (Neovim 0.12+)
   {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      -- Configuración global de diagnósticos
+      -- 🧭 Función on_attach: mapea teclas cuando el LSP está activo
+      local on_attach = function(_, bufnr)
+        local opts = { buffer = bufnr, silent = true, noremap = true }
+
+        -- Navegación LSP
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+        vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, opts)
+        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+        vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+      end
+
+      -- ⚙️ Configuración global de diagnósticos
       vim.diagnostic.config {
-        -- virtual_lines = true,
         virtual_text = {
           source = 'if_many',
           spacing = 2,
           format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
+            local msg = diagnostic.message
+            return msg
           end,
         },
-
         signs = {
           text = {
             [vim.diagnostic.severity.ERROR] = '',
@@ -37,15 +47,15 @@ return {
         severity_sort = true,
       }
 
-      -- Configuración severs (sin require("lspconfig"))
-      --
+      -- 🔧 Configuración de servidores LSP
       vim.lsp.config('clangd', {
         cmd = { 'clangd', '--background-index', '--header-insertion=never' },
-        capabilities = require('cmp_nvim_lsp').default_capabilities(),
         init_options = { clangdFileStatus = true },
+        on_attach = on_attach,
       })
 
       vim.lsp.config('pyright', {
+        on_attach = on_attach,
         settings = {
           python = {
             analysis = {
@@ -57,20 +67,17 @@ return {
           },
         },
       })
+
       vim.lsp.config('ruff', {
-        init_options = {
-          settings = {
-            args = {}, -- Si querés --line-length=100 lo agregás acá
-          },
-        },
-        -- ⚠️ IMPORTANTE: deshabilitamos el formateo para que lo haga Conform
-        on_attach = function(client)
+        on_attach = function(client, bufnr)
           client.server_capabilities.documentFormattingProvider = false
           client.server_capabilities.documentRangeFormattingProvider = false
+          on_attach(client, bufnr)
         end,
       })
 
       vim.lsp.config('gopls', {
+        on_attach = on_attach,
         settings = {
           gopls = {
             analyses = { unusedparams = true },
@@ -82,12 +89,11 @@ return {
       })
 
       vim.lsp.config('lua_ls', {
+        on_attach = on_attach,
         settings = {
           Lua = {
             runtime = { version = 'LuaJIT' },
-            diagnostics = {
-              globals = { 'vim' },
-            },
+            diagnostics = { globals = { 'vim' } },
             workspace = {
               library = vim.api.nvim_get_runtime_file('', true),
               checkThirdParty = false,
@@ -99,7 +105,6 @@ return {
     end,
   },
 
-  -- ⚙️ Mason (instalador de servidores LSP)
   {
     'williamboman/mason.nvim',
     build = ':MasonUpdate',
@@ -108,20 +113,15 @@ return {
     end,
   },
 
-  -- 🔗 Integración Mason + LSPConfig
   {
     'williamboman/mason-lspconfig.nvim',
     config = function()
       require('mason-lspconfig').setup {
         ensure_installed = {
-          -- C
           'clangd',
-          -- Python
           'pyright',
           'ruff',
-          -- Go
           'gopls',
-          -- Lua
           'lua_ls',
           'stylua',
         },
