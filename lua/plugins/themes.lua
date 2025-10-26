@@ -1,6 +1,36 @@
-local function enable_transparency()
-  vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+-- Estado inicial
+local transparency_enabled = false
+local current_colorscheme = vim.g.colors_name -- Guarda el esquema activo
+
+-- Función para alternar transparencia
+local function toggle_transparency()
+  if not transparency_enabled then
+    -- Guardar esquema actual antes de transparentar
+    current_colorscheme = vim.g.colors_name
+
+    -- Activar transparencia
+    vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+    vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'none' })
+    --vim.api.nvim_set_hl(0, 'LineNr', { bg = 'none' })
+    vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'none' })
+
+    transparency_enabled = true
+    vim.notify('🌙 Transparencia activada', vim.log.levels.INFO)
+  else
+    -- Restaurar esquema original
+    if current_colorscheme and current_colorscheme ~= '' then
+      vim.cmd('colorscheme ' .. current_colorscheme)
+      vim.notify('☀️ Transparencia desactivada (' .. current_colorscheme .. ')', vim.log.levels.INFO)
+    else
+      vim.notify('☀️ Transparencia desactivada', vim.log.levels.INFO)
+    end
+    transparency_enabled = false
+  end
 end
+
+-- Keymap para alternar
+vim.keymap.set('n', '<leader>ttr', toggle_transparency, { desc = 'Alternar transparencia' })
 
 return {
   {
@@ -13,59 +43,16 @@ return {
         transparent_background = false,
       }
       vim.cmd [[colorscheme catppuccin-mocha]]
-      enable_transparency()
     end,
   },
 
   {
     'folke/tokyonight.nvim',
-    -- lazy = false,
-    -- priority = 1000,
-    -- opts = {},
-    -- config = function()
-    --   vim.cmd [[colorscheme tokyonight-night]]
-    -- end,
-  },
-  -- {
-  --   'sainnhe/gruvbox-material',
-  --   name = 'gruvbox-material',
-  --   config = function()
-  --     vim.g.gruvbox_material_background = 'hard'
-  --     vim.g.gruvbox_material_foregraund = 'mix'
-  --     vim.g.gruvbox_material_ui_contrast = 'high'
-  --     -- vim.cmd [[colorscheme gruvbox_material ]]
-  --   end,
-  -- },
-  -- {
-  --   'navarasu/onedark.nvim',
-  --   -- priority = 1000, -- make sure to load this before all the other start plugins
-  --   config = function()
-  --     require('onedark').setup {
-  --       style = 'deep',
-  --     }
-  --     -- Enable theme
-  --     -- require('onedark').load()
-  --   end,
-  -- },
-
-  {
-    'rose-pine/neovim',
-    name = 'rose-pine',
+    lazy = false,
+    priority = 1000,
+    opts = {},
     config = function()
-      require('rose-pine').setup {
-        variant = 'moon', -- auto, main, moon, dawn
-        dark_variant = 'moon', -- main, moon, or dawn
-        disable_background = false,
-        styles = {
-          bold = false,
-          italic = false,
-          transparency = false,
-        },
-        -- vim.cmd [[colorscheme rose-pine ]]
-      }
+      -- vim.cmd [[colorscheme tokyonight-night]]
     end,
   },
-  -- { 'EdenEast/nightfox.nvim' },
-  --
-  -- { 'rebelot/kanagawa.nvim' },
 }
