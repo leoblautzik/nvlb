@@ -25,18 +25,15 @@ require('lazy').setup {
   -- Lualine
   { import = 'plugins.lualine' },
 
-  -- Telescope
-  { import = 'plugins.telescope' },
+  -- Telescope + harpoon
+  { import = 'plugins.finder' },
 
   -- CMP + autopairs
   -- { import = 'plugins.cmp' },
 
   -- blink + autopairs
-  { import = 'plugins.autopairs' },
-  { import = 'plugins.blink' },
-
-  -- Tmux navigator
-  { import = 'plugins.tmux-navigator' },
+  { import = 'plugins.editing' },
+  { import = 'plugins.completion' },
 
   -- LSPs
   { import = 'plugins.lsp' },
@@ -44,17 +41,6 @@ require('lazy').setup {
   -- Format
   { import = 'plugins.conform' },
 
-  -- Git signs
-  { import = 'plugins.gitsigns' },
-
-  -- Líneas de identación
-  { import = 'plugins.ibl' },
-
-  { import = 'plugins.harpoon' },
-
-  { import = 'plugins.which-key' },
-
-  { import = 'plugins.mini-nvim' },
-
-  { import = 'plugins.neotest' },
+  -- Git signs + neotest
+  { import = 'plugins.devtools' },
 }

@@ -1,3 +1,7 @@
+local function enable_transparency()
+  vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+end
+
 return {
   {
     'catppuccin/nvim',
@@ -9,6 +13,7 @@ return {
         transparent_background = false,
       }
       vim.cmd [[colorscheme catppuccin-mocha]]
+      enable_transparency()
     end,
   },
 
