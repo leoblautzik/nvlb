@@ -1,12 +1,12 @@
 return {
   -- nvim-autopairs
-  {
-    'windwp/nvim-autopairs',
-    event = 'InsertEnter',
-    config = function()
-      require('nvim-autopairs').setup {}
-    end,
-  },
+  -- {
+  --   'windwp/nvim-autopairs',
+  --   event = 'InsertEnter',
+  --   config = function()
+  --     require('nvim-autopairs').setup {}
+  --   end,
+  -- },
 
   -- indent-blankline
   {
@@ -23,13 +23,37 @@ return {
     },
   },
 
+  -- { 'nvim-tree/nvim-web-devicons' },
+
   -- nvim-mini
   {
     'nvim-mini/mini.nvim',
     version = false,
     config = function()
+      require('mini.starter').setup()
+      require('mini.icons').setup()
       require('mini.surround').setup()
       require('mini.comment').setup()
+      require('mini.pairs').setup()
+      -- local gen_loader = require('mini.snippets').gen_loader
+      -- require('mini.snippets')setup {
+      --   snippets = {
+      --     -- Load custom file with global snippets first (adjust for Windows)
+      --     gen_loader.from_file '~/.config/nvim/snippets/global.json',
+      --
+      --     -- Load snippets based on current language by reading files from
+      --     -- "snippets/" subdirectories from 'runtimepath' directories.
+      --     gen_loader.from_lang(),
+      --   },
+      -- }
+      -- require('mini.completion').setup()
+      require('mini.statusline').setup()
+      --require('mini.tabline').setup()
+      require('mini.notify').setup {
+        lsp_progress = {
+          enable = false,
+        },
+      }
     end,
   },
 

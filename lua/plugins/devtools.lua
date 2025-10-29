@@ -13,7 +13,6 @@ return {
     },
     config = function()
       local neotest = require 'neotest'
-
       neotest.setup {
         adapters = {
           require 'neotest-python' {
@@ -53,6 +52,7 @@ return {
       end, opts)
     end,
   },
+
   -- gitsigns
   {
     'lewis6991/gitsigns.nvim',

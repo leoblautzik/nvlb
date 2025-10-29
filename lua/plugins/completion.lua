@@ -8,6 +8,17 @@ return {
       require('luasnip.loaders.from_vscode').lazy_load()
     end,
   },
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua', -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
 
   -- Autocompletado con blink
   {
@@ -20,13 +31,23 @@ return {
     version = '1.*',
     opts = {
       keymap = {
-        preset = 'enter',
+        preset = 'default',
         ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
         ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
       },
       appearance = { nerd_font_variant = 'mono' },
       completion = { documentation = { auto_show = false } },
-      sources = { default = { 'lsp', 'path', 'snippets', 'buffer' } },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        providers = {
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            -- make lazydev completions top priority (see `:h blink.cmp`)
+            score_offset = 100,
+          },
+        },
+      },
       signature = { enabled = true },
       fuzzy = { implementation = 'prefer_rust_with_warning' },
     },
