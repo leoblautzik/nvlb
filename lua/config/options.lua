@@ -48,7 +48,8 @@ function M.setup()
   -- o.lazyredraw = true -- Don't redraw during macros
   -- o.synmaxcol = 300 -- Syntax highlighting limit
   o.winborder = 'rounded'
-
+  o.fillchars:append { eob = ' ' }
+  --
   -- File handling
   o.backup = false -- Don't create backup files
   o.writebackup = false -- Don't create backup before writing

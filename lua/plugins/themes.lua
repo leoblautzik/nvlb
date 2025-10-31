@@ -16,14 +16,14 @@ local function toggle_transparency()
     vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'none' })
 
     transparency_enabled = true
-    vim.notify('🌙 Transparencia activada', vim.log.levels.INFO)
+    --vim.notify('🌙 Transparencia activada', vim.log.levels.INFO)
   else
     -- Restaurar esquema original
     if current_colorscheme and current_colorscheme ~= '' then
       vim.cmd('colorscheme ' .. current_colorscheme)
-      vim.notify('☀️ Transparencia desactivada (' .. current_colorscheme .. ')', vim.log.levels.INFO)
+      --vim.notify('☀️ Transparencia desactivada (' .. current_colorscheme .. ')', vim.log.levels.INFO)
     else
-      vim.notify('☀️ Transparencia desactivada', vim.log.levels.INFO)
+      --vim.notify('☀️ Transparencia desactivada', vim.log.levels.INFO)
     end
     transparency_enabled = false
   end

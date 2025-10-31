@@ -1,4 +1,11 @@
 return {
+  {
+    'mbbill/undotree',
+    config = function()
+      vim.keymap.set('n', '<F5>', '<cmd>UndotreeToggle<CR>', { desc = 'Undo Tree' })
+    end,
+  },
+
   -- nvim-autopairs
   -- {
   --   'windwp/nvim-autopairs',
