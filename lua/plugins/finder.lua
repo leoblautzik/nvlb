@@ -7,13 +7,23 @@ return {
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', cond = vim.fn.executable 'make' == 1 },
     },
     keys = {
-      -- 🔍 Búsqueda general
-      { '<leader>ff', '<cmd>Telescope find_files<CR>', desc = 'Buscar archivos' },
-      { '<leader>fw', '<cmd>Telescope live_grep<CR>', desc = 'Buscar texto' },
+      { '<leader>sf', '<cmd>Telescope find_files<CR>', desc = 'Buscar archivos' },
+      { '<leader>sw', '<cmd>Telescope grep_string<CR>', desc = 'Buscar texto' },
+      { '<leader>sg', '<cmd>Telescope live_grep<CR>', desc = 'Buscar grep' },
       { '<leader><leader>', '<cmd>Telescope buffers<CR>', desc = 'Buffers abiertos' },
-      { '<leader>fh', '<cmd>Telescope help_tags<CR>', desc = 'Ayuda' },
-      { '<leader>km', '<cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
+      { '<leader>sh', '<cmd>Telescope help_tags<CR>', desc = 'Ayuda' },
       { '<leader>tth', '<cmd>Telescope colorscheme<CR>', desc = 'Elegir colorscheme con Telescope' },
+      { '<leader>sk', '<cmd>Telescope keymaps<CR>', desc = 'Search keymaps' },
+      { '<leader>s', '<cmd>Telescope oldfiles<CR>', desc = '[S]earch Recent Files ("." for repeat)' },
+      { '<leader>sd', '<cmd>Telescope diagnostic<CR>', desc = '[S]earch [D]iagnostics' },
+
+      -- 🔍 Búsqueda general
+      -- { '<leader>ff', '<cmd>Telescope find_files<CR>', desc = 'Buscar archivos' },
+      -- { '<leader>fw', '<cmd>Telescope live_grep<CR>', desc = 'Buscar texto' },
+      -- { '<leader><leader>', '<cmd>Telescope buffers<CR>', desc = 'Buffers abiertos' },
+      -- { '<leader>fh', '<cmd>Telescope help_tags<CR>', desc = 'Ayuda' },
+      -- { '<leader>km', '<cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
+      -- { '<leader>tth', '<cmd>Telescope colorscheme<CR>', desc = 'Elegir colorscheme con Telescope' },
 
       -- 🧭 Git
       { '<leader>gc', '<cmd>Telescope git_commits<CR>', desc = 'Commits' },

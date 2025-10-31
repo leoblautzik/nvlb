@@ -42,7 +42,7 @@ return {
       require('catppuccin').setup {
         transparent_background = false,
       }
-      vim.cmd [[colorscheme catppuccin-mocha]]
+      -- vim.cmd [[colorscheme catppuccin-mocha]]
     end,
   },
 
@@ -52,7 +52,8 @@ return {
     priority = 1000,
     opts = {},
     config = function()
-      -- vim.cmd [[colorscheme tokyonight-night]]
+      vim.cmd [[colorscheme tokyonight-night]]
+      toggle_transparency()
     end,
   },
 
