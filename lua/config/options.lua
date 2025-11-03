@@ -40,13 +40,13 @@ function M.setup()
   o.cmdheight = 1 -- Command line height
   o.completeopt = 'menuone,noinsert,noselect' -- Completion options
   o.showmode = false -- Don't show mode in command line
-  -- o.pumheight = 10 -- Popup menu height
-  -- o.pumblend = 10 -- Popup menu transparency
-  -- o.winblend = 0 -- Floating window transparency
-  -- o.conceallevel = 0 -- Don't hide markup
-  -- o.concealcursor = '' -- Don't hide cursor line markup
-  -- o.lazyredraw = true -- Don't redraw during macros
-  -- o.synmaxcol = 300 -- Syntax highlighting limit
+  o.pumheight = 10 -- Popup menu height
+  o.pumblend = 10 -- Popup menu transparency
+  o.winblend = 0 -- Floating window transparency
+  o.conceallevel = 0 -- Don't hide markup
+  o.concealcursor = '' -- Don't hide cursor line markup
+  o.lazyredraw = true -- Don't redraw during macros
+  o.synmaxcol = 300 -- Syntax highlighting limit
   o.winborder = 'rounded'
   o.fillchars:append { eob = ' ' }
   --

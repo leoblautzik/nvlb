@@ -11,7 +11,7 @@ local function toggle_transparency()
     -- Activar transparencia
     vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'none' })
+    --vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'none' })
     --vim.api.nvim_set_hl(0, 'LineNr', { bg = 'none' })
     vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'none' })
 
@@ -40,21 +40,24 @@ return {
     priority = 1000, -- para que el tema se aplique primero
     config = function()
       require('catppuccin').setup {
+        integrations = {
+          telescope = true,
+        },
         transparent_background = false,
       }
-      -- vim.cmd [[colorscheme catppuccin-mocha]]
+      vim.cmd [[colorscheme catppuccin-mocha]]
     end,
   },
 
   {
     'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    config = function()
-      vim.cmd [[colorscheme tokyonight-night]]
-      toggle_transparency()
-    end,
+    -- lazy = false,
+    -- priority = 1000,
+    -- opts = {},
+    -- config = function()
+    --   vim.cmd [[colorscheme tokyonight-night]]
+    --   -- toggle_transparency()
+    -- end,
   },
 
   {
