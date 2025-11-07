@@ -28,7 +28,7 @@ function M.setup()
   -- Search settings
   o.ignorecase = true -- Case insensitive search
   o.smartcase = true -- Case sensitive if uppercase in search
-  o.hlsearch = false -- Don't highlight search results
+  o.hlsearch = true -- Don't highlight search results
   o.incsearch = true -- Show matches as you type
 
   -- Visual settings

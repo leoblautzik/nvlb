@@ -1,7 +1,8 @@
 return {
   {
     'stevearc/conform.nvim',
-    event = 'BufReadPre',
+    event = { 'BufReadPre', 'BufNewFile' },
+    cmd = { 'ConformInfo' },
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local conform = require 'conform'

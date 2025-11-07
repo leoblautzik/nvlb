@@ -10,12 +10,29 @@ M.setup = function()
 
   -- map("n", "<leader>q", ":q<CR>", { silent = true })
   -- map("n", "<leader>w", ":w<CR>", { silent = true })
+  --
+  map('i', 'jj', '<Esc>', { noremap = true, silent = true })
 
   -------------------------------------------------------------------------------
   -- Deshabilitar PgUp y PgDn en todos los modos
   -------------------------------------------------------------------------------
-  map('', '<PageUp>', '<Nop>', { noremap = true, silent = true })
-  map('', '<PageDown>', '<Nop>', { noremap = true, silent = true })
+  local modes = { 'n', 'i', 'v', 'x', 's', 'o', 'c' }
+
+  for _, key in ipairs { '<PageUp>', '<PageDown>', '<Home>', '<Del>', '<Delete>' } do
+    for _, mode in ipairs(modes) do
+      map(mode, key, '<Nop>', { noremap = true, silent = true })
+    end
+  end
+
+  -------------------------------------------------------------------------------
+  -- Habilitar la tecla Del para cerrar el buffer actual
+  -------------------------------------------------------------------------------
+  map('n', '<Del>', function()
+    local choice = vim.fn.confirm('¿Cerrar el buffer actual?', '&Sí\n&No', 2)
+    if choice == 1 then
+      vim.cmd 'bdelete'
+    end
+  end, { noremap = true, silent = true, desc = 'Cerrar buffer con confirmación' })
 
   -------------------------------------------------------------------------------
   -- Deshabilitar flechas en modo normal
