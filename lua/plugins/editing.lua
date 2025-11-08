@@ -30,14 +30,14 @@ return {
     },
   },
 
-  -- { 'nvim-tree/nvim-web-devicons' },
+  { 'nvim-tree/nvim-web-devicons' },
 
   -- nvim-mini
   {
     'nvim-mini/mini.nvim',
     version = false,
     config = function()
-      require('mini.icons').setup()
+      -- require('mini.icons').setup()
       require('mini.surround').setup()
       require('mini.comment').setup()
       require('mini.statusline').setup()

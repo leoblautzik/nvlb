@@ -1,5 +1,5 @@
 return {}
---
+-- lualine
 -- local function modified_indicator()
 --   if vim.bo.modified then
 --     return '●' -- o cualquier símbolo que quieras
@@ -7,7 +7,7 @@ return {}
 --     return '✓' -- buffer guardado
 --   end
 -- end
---
+
 -- return {
 --   'nvim-lualine/lualine.nvim',
 --   dependencies = { 'nvim-tree/nvim-web-devicons' }, -- opcional pero recomendado
@@ -22,28 +22,29 @@ return {}
 --       },
 --       sections = {
 --         lualine_a = {
+--
 --           {
 --             'mode',
---             fmt = function(str)
---               local map = {
---                 ['NORMAL'] = 'N',
---                 ['INSERT'] = 'I',
---                 ['VISUAL'] = 'V',
---                 ['V-LINE'] = 'VL',
---                 ['V-BLOCK'] = 'VB',
---                 ['REPLACE'] = 'R',
---                 ['COMMAND'] = 'C',
---                 ['TERMINAL'] = 'T',
---               }
---               return map[str] or str:sub(1, 1)
---             end,
+--             -- fmt = function(str)
+--             --   local map = {
+--             --     ['NORMAL'] = 'N',
+--             --     ['INSERT'] = 'I',
+--             --     ['VISUAL'] = 'V',
+--             --     ['V-LINE'] = 'VL',
+--             --     ['V-BLOCK'] = 'VB',
+--             --     ['REPLACE'] = 'R',
+--             --     ['COMMAND'] = 'C',
+--             --     ['TERMINAL'] = 'T',
+--             --   }
+--             --   return map[str] or str:sub(1, 1)
+--             -- end,
 --             icon = '',
 --             separator = { left = '', right = '' },
---             right_padding = 1,
+--             right_padding = 0,
 --           },
 --         },
 --         lualine_b = { 'branch', 'diff', 'diagnostics' },
---         lualine_c = { { modified_indicator }, 'filename' },
+--         lualine_c = { 'filename' },
 --         lualine_x = { 'encoding', 'fileformat', 'filetype' },
 --         lualine_y = {
 --           {
@@ -72,7 +73,7 @@ return {}
 --           },
 --           'progress',
 --         },
---         lualine_z = { { 'location', separator = { left = '', right = '' }, left_padding = 1 } },
+--         lualine_z = { { 'location', separator = { left = '', right = '' }, left_padding = 0 } },
 --       },
 --     }
 --   end,
