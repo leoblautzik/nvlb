@@ -22,5 +22,5 @@ require('lazy').setup {
     { import = 'plugins' },
   },
 }
-vim.cmd [[colorscheme catppuccin-mocha]]
+vim.cmd [[colorscheme kanagawa]]
 -- vim.cmd [[colorscheme tokyonight-night]]

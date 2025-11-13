@@ -13,7 +13,7 @@ return {
       { '<leader>fg', '<cmd>Telescope live_grep<CR>', desc = 'Buscar grep' },
       { '<leader><leader>', '<cmd>Telescope buffers<CR>', desc = 'Buffers abiertos' },
       { '<leader>fh', '<cmd>Telescope help_tags<CR>', desc = 'Ayuda' },
-      { '<leader>tth', '<cmd>Telescope colorscheme<CR>', desc = 'Elegir colorscheme con Telescope' },
+      -- { '<leader>tth', '<cmd>Telescope colorscheme<CR>', desc = 'Elegir colorscheme con Telescope' },
       { '<leader>fk', '<cmd>Telescope keymaps<CR>', desc = 'Search keymaps' },
       { '<leader>fr', '<cmd>Telescope oldfiles<CR>', desc = '[S]earch Recent Files ("." for repeat)' },
       { '<leader>fd', '<cmd>Telescope diagnostic<CR>', desc = '[S]earch [D]iagnostics' },
@@ -30,8 +30,6 @@ return {
         defaults = {
           -- initial_mode = 'normal',
           -- border = false,
-          -- borderchars = { '─', ' ', '─', ' ', ' ', ' ', ' ', ' ' },
-          -- borderchars = { '─', '│', '─', '│', '╭', '╮', '╰', '╯' },
           layout_strategy = 'horizontal',
           layout_config = { prompt_position = 'bottom' },
           sorting_strategy = 'ascending',

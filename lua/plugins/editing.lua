@@ -37,16 +37,56 @@ return {
     'nvim-mini/mini.nvim',
     version = false,
     config = function()
-      -- require('mini.icons').setup()
-      require('mini.surround').setup()
-      require('mini.comment').setup()
-      require('mini.statusline').setup()
-      --require('mini.tabline').setup()
-      require('mini.notify').setup {
-        lsp_progress = {
-          enable = false,
+      local statusline = require 'mini.statusline'
+      local lsp = vim.lsp
+
+      -- Definir colores personalizados
+      vim.api.nvim_set_hl(0, 'MiniStatuslineLSPActive', { fg = '#a6e3a1', bg = '#1e1e2e', bold = true })
+      vim.api.nvim_set_hl(0, 'MiniStatuslineLSPInactive', { fg = '#6c7086', bg = '#1e1e2e', italic = true })
+
+      local function lsp_name()
+        local clients = lsp.get_clients { bufnr = 0 }
+        if #clients == 0 then
+          return '', 'MiniStatuslineLSPInactive'
+        end
+        local names = {}
+        for _, client in ipairs(clients) do
+          table.insert(names, client.name)
+        end
+        return ' ' .. table.concat(names, ', '), 'MiniStatuslineLSPActive'
+      end
+
+      statusline.setup {
+        use_icons = true,
+        content = {
+          active = function()
+            local mode, mode_hl = statusline.section_mode { trunc_width = 120 }
+            local git = statusline.section_git { trunc_width = 75 }
+            local diff = statusline.section_diff { trunc_width = 75 }
+            local diagnostics = statusline.section_diagnostics { trunc_width = 75 }
+            local filename = statusline.section_filename { trunc_width = 140 }
+            local fileinfo = statusline.section_fileinfo { trunc_width = 120 }
+            local location = statusline.section_location { trunc_width = 75 }
+
+            local lsp_str, lsp_hl = lsp_name()
+
+            return statusline.combine_groups {
+              { hl = mode_hl, strings = { mode } },
+              { hl = 'MiniStatuslineDevinfo', strings = { git, diff, diagnostics } },
+              '%<',
+              { hl = 'MiniStatuslineFilename', strings = { filename } },
+              '%=',
+              { hl = lsp_hl, strings = { lsp_str } },
+              { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+              { hl = mode_hl, strings = { location } },
+            }
+          end,
         },
       }
+
+      require('mini.surround').setup()
+      require('mini.comment').setup()
+      require('mini.notify').setup { lsp_progress = { enable = false } }
     end,
   },
 
