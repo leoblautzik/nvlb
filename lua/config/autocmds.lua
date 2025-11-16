@@ -115,6 +115,13 @@ M.setup = function()
     end,
   })
 
+  vim.cmd [[
+  augroup QFWrap
+    autocmd!
+    autocmd FileType qf setlocal wrap linebreak
+  augroup END
+  ]]
+
   -- Archivos de test
   vim.api.nvim_create_autocmd('BufNewFile', {
     pattern = { 'test_*.py', '*_test.py' },
