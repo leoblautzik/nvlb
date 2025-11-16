@@ -1,50 +1,52 @@
--- === Función de transparencia ===
-local function make_transparent(group)
-  local hl = vim.api.nvim_get_hl(0, { name = group })
-  if hl then
-    vim.api.nvim_set_hl(0, group, { fg = hl.fg, bg = 'none' })
-  end
-end
-
 local transparency_enabled = false
-local current_colorscheme = vim.g.colors_name
-local transparency_file = vim.fn.stdpath 'state' .. '/transparency_enabled.txt'
+-- local transparency_file = vim.fn.stdpath 'state' .. '/transparency_enabled.txt'
+local scheme_file = vim.fn.stdpath 'state' .. '/last_colorscheme.txt'
 
-local function save_transparency(enabled)
-  local f = io.open(transparency_file, 'w')
-  if f then
-    f:write(enabled and '1' or '0')
-    f:close()
+local function apply_transparency()
+  vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+  vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'none' })
+
+  local function make_transparent(group)
+    local hl = vim.api.nvim_get_hl(0, { name = group })
+    if hl then
+      vim.api.nvim_set_hl(0, group, { fg = hl.fg, bg = 'none' })
+    end
+  end
+
+  local telescope_groups = {
+    'TelescopeNormal',
+    'TelescopeBorder',
+    'TelescopePromptBorder',
+    'TelescopeResultsBorder',
+    'TelescopePreviewBorder',
+  }
+
+  for _, g in ipairs(telescope_groups) do
+    make_transparent(g)
   end
 end
+
+local function remove_transparency()
+  local current = vim.g.colors_name
+  if current and current ~= '' then
+    pcall(function()
+      vim.cmd('colorscheme ' .. current)
+    end)
+  end
+end
+
 local function toggle_transparency()
   if not transparency_enabled then
-    current_colorscheme = vim.g.colors_name
-
-    vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-    vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'none' })
-
-    make_transparent 'TelescopeNormal'
-    make_transparent 'TelescopeBorder'
-    make_transparent 'TelescopePromptBorder'
-    make_transparent 'TelescopeResultsBorder'
-    make_transparent 'TelescopePreviewBorder'
-
+    apply_transparency()
     transparency_enabled = true
   else
-    if current_colorscheme and current_colorscheme ~= '' then
-      vim.cmd('colorscheme ' .. current_colorscheme)
-    end
+    remove_transparency()
     transparency_enabled = false
   end
-  save_transparency(transparency_enabled)
 end
 
 vim.keymap.set('n', '<leader>ttr', toggle_transparency, { desc = 'Alternar transparencia' })
-
--- === Guardar y restaurar último colorscheme ===
-local scheme_file = vim.fn.stdpath 'state' .. '/last_colorscheme.txt'
 
 local function save_colorscheme(name)
   local f = io.open(scheme_file, 'w')
@@ -69,25 +71,24 @@ local function load_last_colorscheme()
   vim.cmd 'colorscheme catppuccin-mocha' -- por defecto
   return 'catppuccin-mocha'
 end
-local transparency_file = vim.fn.stdpath 'state' .. '/transparency_enabled.txt'
 
-local function load_transparency()
-  local f = io.open(transparency_file, 'r')
-  if f then
-    local v = f:read '*l'
-    f:close()
-    return v == '1'
-  end
-  return false
-end
+-- local function load_transparency()
+--   local f = io.open(transparency_file, 'r')
+--   if f then
+--     local v = f:read '*l'
+--     f:close()
+--     return v == '1'
+--   end
+--   return false
+-- end
 
 -- Restaurar al inicio
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     load_last_colorscheme()
-    if load_transparency() then
-      toggle_transparency()
-    end
+    -- if load_transparency() then
+    --   toggle_transparency()
+    -- end
   end,
 })
 
@@ -189,7 +190,6 @@ vim.keymap.set('n', '<leader>tc', function()
     :find()
 end, { desc = 'Seleccionar colorscheme favorito' })
 
--- === Plugins de themes ===
 return {
   {
     'catppuccin/nvim',
