@@ -13,8 +13,8 @@ function M.setup()
   o.relativenumber = true -- Relative line numbers
   o.cursorline = true -- Highlight current line
   o.wrap = false -- Don't wrap lines
-  o.scrolloff = 10 -- Keep 10 lines above/below cursor
-  o.sidescrolloff = 8 -- Keep 8 columns left/right of cursor
+  o.scrolloff = 2 -- Keep 2 lines above/below cursor
+  o.sidescrolloff = 2 -- Keep 2 columns left/right of cursor
 
   -- Indentation
   o.tabstop = 4 -- Tab width

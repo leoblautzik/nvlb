@@ -48,6 +48,16 @@ M.setup = function()
   vim.keymap.set('v', '<C-c>', '"+y', { noremap = true, silent = true })
 
   -------------------------------------------------------------------------------
+  -- Copia todo el contenido del archivo al portapapeles del sistema sin mover
+  -- el cursor
+  vim.keymap.set('n', '<C-a>', function()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    vim.cmd 'normal! ggVG"+y'
+    vim.api.nvim_win_set_cursor(0, pos)
+  end, { desc = 'Copiar todo sin mover cursor' })
+
+  -------------------------------------------------------------------------------
+
   -- Navegación con netrw
   -------------------------------------------------------------------------------
   -- Toggle netrw con \

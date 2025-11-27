@@ -68,7 +68,7 @@ local function load_last_colorscheme()
       return name
     end
   end
-  vim.cmd 'colorscheme catppuccin-mocha' -- por defecto
+  --vim.cmd 'colorscheme catppuccin-mocha' -- por defecto
   return 'catppuccin-mocha'
 end
 
@@ -86,6 +86,7 @@ end
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     load_last_colorscheme()
+    -- apply_transparency()
     -- if load_transparency() then
     --   toggle_transparency()
     -- end
