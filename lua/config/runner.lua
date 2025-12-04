@@ -1,4 +1,4 @@
--- compilar y ejecutar
+-- Compilar y ejecutar
 -- Guarda el archivo si está modificado
 -- Reutiliza una terminal si ya existe
 -- Envia el nuevo comando a esa terminal

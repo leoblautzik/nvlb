@@ -8,21 +8,23 @@ M.setup = function()
   map('n', '<Space>', '', {})
   vim.g.mapleader = ' ' -- Leader key
 
-  -- map("n", "<leader>q", ":q<CR>", { silent = true })
-  -- map("n", "<leader>w", ":w<CR>", { silent = true })
+  -- map('n', '<leader>q', ':q<CR>', { silent = true })
+  -- map('n', '<leader>w', ':w<CR>', { silent = true })
+  -- map('n', '<leader>o', ':update<CR> :source<CR>', { silent = true })
+  map('n', '<leader>zz', ':wqa<CR>', { silent = true })
   --
   map('i', 'jj', '<Esc>', { noremap = true, silent = true })
 
   -------------------------------------------------------------------------------
   -- Deshabilitar PgUp y PgDn en todos los modos
   -------------------------------------------------------------------------------
-  local modes = { 'n', 'i', 'v', 'x', 's', 'o', 'c' }
-
-  for _, key in ipairs { '<PageUp>', '<PageDown>', '<Home>', '<Del>', '<Delete>' } do
-    for _, mode in ipairs(modes) do
-      map(mode, key, '<Nop>', { noremap = true, silent = true })
-    end
-  end
+  -- local modes = { 'n', 'i', 'v', 'x', 's', 'o', 'c' }
+  --
+  -- for _, key in ipairs { '<PageUp>', '<PageDown>', '<Home>', '<Del>', '<Delete>' } do
+  --   for _, mode in ipairs(modes) do
+  --     map(mode, key, '<Nop>', { noremap = true, silent = true })
+  --   end
+  -- end
 
   -------------------------------------------------------------------------------
   -- Habilitar la tecla Del para cerrar el buffer actual
@@ -57,7 +59,6 @@ M.setup = function()
   end, { desc = 'Copiar todo sin mover cursor' })
 
   -------------------------------------------------------------------------------
-
   -- Navegación con netrw
   -------------------------------------------------------------------------------
   -- Toggle netrw con \

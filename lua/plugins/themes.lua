@@ -93,7 +93,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end,
 })
 
--- === Selector personalizado de colorschemes ===
+-- Selector personalizado de colorschemes
 vim.keymap.set('n', '<leader>tc', function()
   local themes = {
     -- Catppuccin

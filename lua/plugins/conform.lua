@@ -16,7 +16,8 @@ return {
         },
 
         -- Formateo al guardar (opcional)
-        format_after_save = true,
+        -- format_after_save = true,
+        format_on_save = true,
       }
 
       -- Keymap manual con mensaje en la línea de comandos
